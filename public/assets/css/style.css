@@ -1,0 +1,109 @@
+#app {
+  height: 100vh;
+  width: 100vw;
+  display: block;
+}
+
+#particles-js {
+  background: rgb(255, 93, 93);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1 !important;
+}
+
+canvas {
+  display: block;
+  vertical-align: bottom;
+}
+
+.hide {
+  display: none !important;
+}
+
+#playername-form {
+  text-align: center;
+  padding-top: 45vh;
+}
+
+#play-form {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#game-wrapper {
+  display: flex;
+  height: 100vh;
+}
+
+#players {
+  flex-basis: 20%;
+  border-left: 3px solid #acacac;
+  background-color: rgb(0, 0, 0);
+}
+
+#players h2 {
+  padding: 0.5rem 0.75rem;
+  color: white;
+  background-color: #acacac;
+}
+
+#players ul {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  list-style: none;
+  color: white;
+  text-align: center;
+}
+
+#play {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+}
+
+.img-fluid {
+  max-width: 50%;
+}
+
+.btn-dark {
+  text-transform: uppercase;
+}
+
+#username {
+  max-width: 50vh;
+  margin: auto;
+}
+
+#playground {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#play {
+  background-color: rgb(0, 0, 0);
+}
+
+#whale-img {
+  height: 10%;
+}
+
+.score {
+  color: white;
+}
+
+#player-score {
+  color: white;
+}
+
+.container {
+  max-width: 1300px;
+}
+
+#scoreboard {
+  font-size: 2rem;
+  text-align: center;
+}

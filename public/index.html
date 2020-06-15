@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Click game</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+
+  <body>
+    <div id="particles-js"></div>
+    <!-- <div id="app"> -->
+    <div id="start" class="container">
+      <form id="playername-form">
+        <div class="form-group">
+          <input
+            type="text"
+            id="username"
+            class="form-control form-control-lg"
+            required
+            placeholder="Your players name"
+          />
+        </div>
+        <button type="submit" class="btn btn-dark">Enter game</button>
+      </form>
+      <!-- /#playername-form -->
+    </div>
+
+    <!--start-->
+    <div id="game-wrapper" class="hide">
+      <div id="play" class="container">
+        <div id="playground" class="container">
+          <button type="submit" class="btn btn-secondary" id="startGame">
+            Play this game
+          </button>
+        </div>
+      </div>
+
+      <div id="players">
+        <h2>Players online</h2>
+        <ul id="online-players"></ul>
+        <h2>Scoreboard</h2>
+        <ul id="showScore"></ul>
+        <h2>Reaction time</h2>
+        <ul id="score"></ul>
+      </div>
+      <!-- /#users -->
+    </div>
+    <!-- /#game-wrapper -->
+    <!-- </div> -->
+    <audio
+      id="audio"
+      src="./assets/audio/245645__unfa__cartoon-pop-clean.flac"
+    ></audio>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/assets/js/game.js"></script>
+    <script src="./assets/js/particles/particles.js"></script>
+    <script src="./assets/js/particles/app_particles.js"></script>
+  </body>
+</html>
