@@ -45,7 +45,7 @@ function startNewGame(socket) {
   console.log("creating one game from user: ", playerOne[socket.id]);
   console.log("Start a gameBoard from PlayerOne: ", playerOne[socket.id]);
 
-  if (data.roundsPlayed < 5) {
+  if (data.roundsPlayed < 10) {
     socket.emit("get-playground", socket.id);
     console.log("Played rounds: ", data.roundsPlayed);
   } else {
