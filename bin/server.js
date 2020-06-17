@@ -5,7 +5,7 @@
 require("dotenv").config();
 
 const app = require("../app");
-const debug = require("debug")("tap-the-whale:server");
+const debug = require("debug")("click-game:server");
 const http = require("http");
 const SocketIO = require("socket.io");
 

@@ -1,11 +1,11 @@
 {
-  "name": "clickGame",
+  "name": "click-game",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/server.js",
-    "dev": "cross-env DEBUG=clickGame:* nodemon ./bin/server.js",
-    "debug": "cross-env DEBUG=clickGame:* nodemon --inspect ./bin/server.js"
+    "dev": "cross-env DEBUG=click-game:* nodemon ./bin/server.js",
+    "debug": "cross-env DEBUG=click-game:* nodemon --inspect ./bin/server.js"
   },
   "dependencies": {
     "cross-env": "^7.0.2",
