@@ -106,6 +106,9 @@ h1 {
   margin: auto;
   text-transform: uppercase;
 }
+.btn-dark:hover {
+  color: rgb(164, 164, 164);
+}
 
 #image {
   width: 10vh;
