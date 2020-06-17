@@ -24,6 +24,15 @@ canvas {
   display: none !important;
 }
 
+.user {
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#online-players {
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 #playername-form {
   text-align: center;
   padding-top: 45vh;
@@ -96,6 +105,7 @@ canvas {
 }
 
 h1 {
+  font-family: "Odibee Sans", cursive;
   color: #000000;
   text-align: center;
   padding-top: 35vh;
@@ -123,11 +133,14 @@ h1 {
 }
 
 h2 {
+  font-family: "Odibee Sans", cursive;
   text-align: center;
   color: #000000;
 }
 
 .list-item {
+  font-family: "Odibee Sans", cursive;
+  text-transform: capitalize;
   list-style-type: none;
 }
 
