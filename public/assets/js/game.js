@@ -3,114 +3,149 @@ const socket = io();
 const startEl = document.querySelector("#start");
 const gameWrapperEl = document.querySelector("#game-wrapper");
 const playernameForm = document.querySelector("#playername-form");
-
-//GAME CODE
-const score = document.querySelector("#score");
+const image = document.querySelector("#image");
 const playGround = document.querySelector("#playground");
 const startGame = document.querySelector("#startGame");
 const showScore = document.querySelector("#showScore");
+const loading = document.querySelector("#loading");
+const disconnected = document.querySelector("#disconnected");
+const gameOver = document.querySelector("#gameOver");
 
-let scorePlayer = 0;
+let playername = null;
+let setTime = null;
 
-let player = { score: 0 };
-startGame.addEventListener("click", function () {
-  startGame.style.display = "none";
-  let ranTime = Math.random() * 2000 + 1000;
-  setTimeout(makeItem, ranTime);
-});
+let data = {
+  id: null,
+};
 
-function makeItem() {
-  let boundary = playGround.getBoundingClientRect();
-  console.log(boundary);
-  let div = document.createElement("div");
-  let ul = document.createElement("ul");
-  div.style.position = "absolute";
-  div.style.left = Math.random() * boundary.width + "px";
-  div.style.top = Math.random() * boundary.height + "px";
-  div.style.width = Math.random() * 10 + 40 + "px";
-  div.style.height = Math.random() * 10 + 40 + "px";
-  div.style.borderRadius = "10%";
-  div.style.cursor = "pointer";
-  div.style.backgroundColor = "#" + Math.random().toString(16).substr(-6);
-  ul.startTime = Date.now();
-  div.addEventListener("click", function () {
-    let endTime = Date.now();
-    let diff = (endTime - ul.startTime) / 1000;
-    score.innerHTML = `${username}: ` + diff + "seconds";
-    // startGame.style.display = "block";
-    clearTimeout(ul.timer);
-    makeItem();
-    playGround.removeChild(div);
-  });
-  div.addEventListener("click", function () {
-    scorePlayer++;
-    showScore.innerHTML = `${username}` + " score: " + scorePlayer;
-  });
-  div.addEventListener("click", function play() {
-    let audio = document.getElementById("audio");
-    audio.play();
-  });
-  div.timer = setTimeout(function () {
-    playGround.removeChild(div);
-    makeItem();
-  }, 1500);
-  playGround.appendChild(div);
-  console.log(div);
-}
-
-//Functionality for players
-let username = null;
-
-const updateOnlinePlayers = (users) => {
+// Update players
+const updatePlayers = (users) => {
   document.querySelector("#online-players").innerHTML = users
     .map((user) => `<li class="user">${user}</li>`)
     .join("");
 };
 
-// get username from form and emit `register-user`-event to server
+// Update scoreboard
+const updateScoreBoard = (scoreboard) => {
+  document.querySelector("#showScore").innerHTML = Object.entries(scoreboard)
+    .map(([key, value]) => {
+      console.log(`${key}: ${value}`);
+      return `<li class="list-item users">${key}: ${value}</li>`;
+    })
+    .join("");
+};
+
+// Get "playground"  where image can "move" around and "rules".
+function getPlayGround() {
+  const playgroundHeight = playGround.offsetHeight;
+  const playgroundWidth = playGround.offsetWidth;
+
+  const y = playgroundHeight;
+  const x = playgroundWidth;
+
+  const playgroundDimensions = { y, x };
+  socket.emit("random-position", playgroundDimensions);
+}
+
+// Output random position for the image
+const randomPosition = (y, x, delay) => {
+  image.style.display = "inline";
+  image.style.top = y + "px";
+  image.style.left = x + "px";
+
+  setTimeout(() => {
+    image.classList.remove("hide"), (setTime = Date.now());
+  }, delay);
+};
+
+// Audio when clicking the image
+image.addEventListener("click", function play() {
+  var audio = document.querySelector("#audio");
+  audio.play();
+});
+
+// the player clicked on image
+image.addEventListener("click", (e) => {
+  let playerClicked = Date.now();
+  reactiontime = playerClicked - setTime;
+  socket.emit("user-click", playername);
+
+  let data = {
+    id: socket.id,
+    reactiontime,
+  };
+
+  socket.emit("player-clicked-image", data);
+  image.classList.add("hide");
+});
+
+// Get username form and emit "register-user" event to the server
 playernameForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  username = document.querySelector("#username").value;
-  socket.emit("register-user", username, (status) => {
-    console.log("Server acknowledged the registration", status);
-
-    if (status.joinChat) {
+  playername = document.querySelector("#username").value;
+  socket.emit("register-user", playername, (status) => {
+    if (status.joinGame) {
       startEl.classList.add("hide");
-      gameWrapperEl.classList.remove("hide");
+      loading.classList.remove("hide");
 
-      updateOnlinePlayers(status.onlineUsers);
+      updatePlayers(status.onlineUsers);
     }
   });
 });
 
-socket.on("reconnect", () => {
-  if (username) {
-    socket.emit("register-user", username, () => {
-      console.log("The server acknowledged our reconnect.");
-    });
-  }
-});
-
-socket.on("online-players", (users) => {
-  updateOnlinePlayers(users);
-});
-
-// Particles
-var count_particles, stats, update;
-stats = new Stats();
-stats.setMode(0);
-stats.domElement.style.position = "absolute";
-stats.domElement.style.left = "0px";
-stats.domElement.style.top = "0px";
-document.body.appendChild(stats.domElement);
-
-update = function () {
-  stats.begin();
-  stats.end();
-  if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
-    count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
-  }
-  requestAnimationFrame(update);
+// Player disconnected/exited from the game
+const playerDisconnected = () => {
+  disconnected.classList.remove("hide");
+  gameWrapperEl.classList.add("hide");
+  gameOver.classList.add("hide");
 };
-requestAnimationFrame(update);
+
+// show the winner and show it
+function getGameOver(scoreboard) {
+  document.querySelector("#result").innerHTML = Object.entries(scoreboard)
+    .map(([key, value]) => {
+      return `<li class="list-item players">${key}: ${value}</li>`;
+    })
+    .join("");
+
+  gameOver.classList.remove("hide");
+  gameWrapperEl.classList.add("hide");
+}
+
+// Get players online
+const handleUpdateUsers = (users) => {
+  document.querySelector("#online-players").innerHTML = users
+    .map((user) => `<li id="online-players">${user}</li>`)
+    .join("");
+};
+
+// socket.on
+socket.on("online-players", (users) => {
+  updatePlayers(users);
+});
+
+socket.on("online-users", (users) => {
+  handleUpdateUsers(users);
+});
+
+const getPlayers = () => {
+  loading.classList.add("hide");
+  gameWrapperEl.classList.remove("hide");
+};
+
+socket.on("reconnect", () => {
+  if (playername) {
+    socket.emit("register-user", playername, () => {});
+  }
+});
+
+socket.on("user-disconnected", (playername) => {
+  playerDisconnected(playername);
+});
+
+socket.on("show-game", getPlayers);
+socket.on("update-score", updateScoreBoard);
+socket.on("random-position", randomPosition);
+socket.on("get-playground", getPlayGround);
+socket.on("game-over", getGameOver);

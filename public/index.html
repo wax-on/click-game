@@ -17,7 +17,6 @@
 
   <body>
     <div id="particles-js"></div>
-    <!-- <div id="app"> -->
     <div id="start" class="container">
       <form id="playername-form">
         <div class="form-group">
@@ -29,18 +28,53 @@
             placeholder="Your players name"
           />
         </div>
-        <button type="submit" class="btn btn-dark">Enter game</button>
+        <!-- Start game  -->
+        <button type="submit" id="startGame" class="btn btn-dark">
+          Play game
+        </button>
       </form>
       <!-- /#playername-form -->
+    </div>
+
+    <!-- Show loading page  -->
+    <div id="loading" class="hide">
+      <p>Waiting for opponent to join game...</p>
+    </div>
+
+    <!-- Player disconnected from game -->
+    <div id="disconnected" class="hide">
+      <h1>Game over!</h1>
+      <p>Your opponent left the game.</p>
+      <button
+        id="play-again"
+        class="btn btn-dark"
+        onclick="window.location.href='/';"
+      >
+        Play again
+      </button>
+    </div>
+
+    <!-- Show who's winner -->
+    <div id="gameOver" class="hide">
+      <h1>Game over!</h1>
+      <h2>Result:</h2>
+      <p id="result"></p>
+      <button
+        id="play-again"
+        class="btn btn-dark"
+        onclick="window.location.href='/';"
+      >
+        Play again
+      </button>
     </div>
 
     <!--start-->
     <div id="game-wrapper" class="hide">
       <div id="play" class="container">
         <div id="playground" class="container">
-          <button type="submit" class="btn btn-secondary" id="startGame">
-            Play this game
-          </button>
+          <div id="play">
+            <img id="image" src="./assets/images/gangster-154425_640.png" />
+          </div>
         </div>
       </div>
 
@@ -49,13 +83,12 @@
         <ul id="online-players"></ul>
         <h2>Scoreboard</h2>
         <ul id="showScore"></ul>
-        <h2>Reaction time</h2>
-        <ul id="score"></ul>
       </div>
       <!-- /#users -->
     </div>
     <!-- /#game-wrapper -->
-    <!-- </div> -->
+
+    <!-- Audio file  -->
     <audio
       id="audio"
       src="./assets/audio/245645__unfa__cartoon-pop-clean.flac"
