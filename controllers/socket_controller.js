@@ -1,6 +1,6 @@
 // Socket controller
 
-const debug = require("debug")("clickGame:socket_controller");
+const debug = require("debug")("click-game:socket_controller");
 
 let io = null;
 let playerTwo = {};
